@@ -39,6 +39,10 @@
     ],
     "rules": [
       {
+        "rule_set": "ads",
+        "action": "reject"
+      },
+      {
         "clash_mode": "direct",
         "server": "cn_dns"
       },
@@ -278,7 +282,15 @@
         "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/category-emby.srs",
         "update_interval": "24h",
         "download_detour": "Default"
-      }
+      },
+      {
+  "tag": "ads",
+  "type": "remote",
+  "format": "binary",
+  "url": "https://anti-ad.net/anti-ad-sing-box.srs",
+  "update_interval": "24h",
+  "download_detour": "Default"
+}
     ],
     "rules": [
       {
@@ -373,6 +385,10 @@
       {
         "domain_suffix": "sexlikereal.com",
         "outbound": "Streaming-Media"
+      },
+      {
+        "domain_suffix": "googleapis.cn",
+        "outbound": "Default"
       },
       {
         "rule_set": ["netflixsite", "hbo", "disney", "hulu"],
