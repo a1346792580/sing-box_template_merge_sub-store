@@ -53,8 +53,7 @@
       { "protocol": "dns", "action": "hijack-dns" },
       {
         "rule_set": ["Category-Ads"],
-        "action": "reject",
-        "method": "drop"
+        "action": "reject"
       },
       {
         "action": "route",
@@ -95,9 +94,7 @@
     "rules": [
       { 
         "rule_set": ["Category-Ads"], 
-        "action": "reject", 
-        "method": "rcode", 
-        "code": "refused" 
+        "action": "reject"
       },
       { "rule_set": ["GeoSite-CN"], "server": "Local-DNS" },
       { "rule_set": ["GeoLocation-!CN"], "server": "Remote-DNS" }
