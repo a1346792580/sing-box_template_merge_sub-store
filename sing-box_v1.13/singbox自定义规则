@@ -39,6 +39,10 @@
     ],
     "rules": [
       {
+        "rule_set": "Category-Ads",
+        "action": "reject"
+      },
+      {
         "clash_mode": "direct",
         "server": "cn_dns"
       },
