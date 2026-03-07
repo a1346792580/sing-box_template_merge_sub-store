@@ -36,7 +36,7 @@
     { "type": "selector", "tag": "Telegram", "outbounds": [] },
     { "type": "selector", "tag": "Google", "outbounds": [] },
     { "type": "selector", "tag": "YouTube", "outbounds": [] },
-    { "type": "selector", "tag": "哔哩哔哩", "outbounds": [] },
+    { "type": "selector", "tag": "哔哩哔哩", "outbounds": ["🎯 全球直连"] },
     { "type": "selector", "tag": "Steam", "outbounds": [] },
     { "type": "direct", "tag": "🎯 全球直连" },
     { "type": "block", "tag": "🚫 广告拦截" },
@@ -48,6 +48,7 @@
     }
   ],
   "route": {
+    "default_domain_resolver": "Local-DNS",
     "rules": [
       { "action": "sniff" },
       { "protocol": "dns", "action": "hijack-dns" },
@@ -73,15 +74,51 @@
         "tag": "Category-Ads",
         "type": "remote",
         "format": "binary",
-        "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/category-ads-all.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs",
         "download_detour": "🎯 全球直连"
       },
-      { "tag": "GeoSite-CN", "type": "remote", "format": "binary", "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/cn.srs" },
-      { "tag": "Google", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs" },
-      { "tag": "Youtube", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs" },
-      { "tag": "Telegram", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/telegram.srs" },
-      { "tag": "BiliBili", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bilibili.srs" },
-      { "tag": "GeoLocation-!CN", "type": "remote", "format": "binary", "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/geolocation-!cn.srs" }
+      {
+        "tag": "GeoSite-CN",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
+        "download_detour": "🎯 全球直连"
+      },
+      {
+        "tag": "Google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs",
+        "download_detour": "🎯 全球直连"
+      },
+      {
+        "tag": "Youtube",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs",
+        "download_detour": "🎯 全球直连"
+      },
+      {
+        "tag": "Telegram",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/telegram.srs",
+        "download_detour": "🎯 全球直连"
+      },
+      {
+        "tag": "BiliBili",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bilibili.srs",
+        "download_detour": "🎯 全球直连"
+      },
+      {
+        "tag": "GeoLocation-!CN",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
+        "download_detour": "🎯 全球直连"
+      }
     ],
     "final": "🐟 漏网之鱼",
     "auto_detect_interface": true
@@ -95,6 +132,16 @@
       { 
         "rule_set": ["Category-Ads"], 
         "action": "reject"
+      },
+      {
+        "domain": [
+          "testingcf.jsdelivr.net",
+          "cdn.jsdelivr.net",
+          "fastly.jsdelivr.net",
+          "github.com",
+          "raw.githubusercontent.com"
+        ],
+        "server": "Local-DNS"
       },
       { "rule_set": ["GeoSite-CN"], "server": "Local-DNS" },
       { "rule_set": ["GeoLocation-!CN"], "server": "Remote-DNS" }
