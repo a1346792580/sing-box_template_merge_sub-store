@@ -94,7 +94,7 @@
       { "tag": "Remote-DNS", "type": "https", "server": "8.8.8.8", "detour": "🚀 节点选择" }
     ],
     "rules": [
-      { "rule_set": ["Category-Ads"], "action": "reject", "method": "rcode", "code": "refused" },
+      { "rule_set": ["Category-Ads"], "action": "reject", "method": "drop" },
       { "rule_set": ["GeoSite-CN"], "server": "Local-DNS" },
       { "rule_set": ["GeoLocation-!CN"], "server": "Remote-DNS" }
     ],
