@@ -284,15 +284,22 @@
         "download_detour": "Default"
       },
       {
-  "tag": "ads",
-  "type": "remote",
-  "format": "binary",
-  "url": "https://anti-ad.net/anti-ad-sing-box.srs",
-  "update_interval": "24h",
-  "download_detour": "Default"
-}
+        "tag": "Category-Ads",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs",
+        "update_interval": "24h",
+        "download_detour": "Default"
+      }
     ],
     "rules": [
+      {
+        "action": "reject",
+        "rule_set": [
+          "Category-Ads"
+        ],
+        "method": ""
+      },
       {
         "type": "logical",
         "mode": "and",
