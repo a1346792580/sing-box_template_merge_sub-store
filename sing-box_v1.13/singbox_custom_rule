@@ -62,7 +62,7 @@
         "outbound": "GLOBAL"
       },
       { "clash_mode": "direct", "outbound": "🎯 全球直连" },
-      { "rule_set": ["yy-geosite.srs", "GeoSite-CN"], "outbound": "🎯 全球直连" },
+      { "rule_set": ["GeoSite-CN"], "outbound": "🎯 全球直连" },
       { "rule_set": ["Youtube"], "outbound": "YouTube" },
       { "rule_set": ["Google"], "outbound": "Google" },
       { "rule_set": ["Telegram"], "outbound": "Telegram" },
@@ -77,11 +77,10 @@
         "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/category-ads-all.srs",
         "download_detour": "🎯 全球直连"
       },
-      { "tag": "yy-geosite.srs", "type": "remote", "format": "binary", "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/cn.srs" },
       { "tag": "GeoSite-CN", "type": "remote", "format": "binary", "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/cn.srs" },
-      { "tag": "Google", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/google.srs" },
+      { "tag": "Google", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs" },
       { "tag": "Youtube", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs" },
-      { "tag": "Telegram", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/telegram.srs" }，
+      { "tag": "Telegram", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/telegram.srs" },
       { "tag": "BiliBili", "type": "remote", "format": "binary", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bilibili.srs" },
       { "tag": "GeoLocation-!CN", "type": "remote", "format": "binary", "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/sing/geo/geosite/geolocation-!cn.srs" }
     ],
@@ -94,7 +93,12 @@
       { "tag": "Remote-DNS", "type": "https", "server": "8.8.8.8", "detour": "🚀 节点选择" }
     ],
     "rules": [
-      { "rule_set": ["Category-Ads"], "action": "reject", "method": "drop" },
+      { 
+        "rule_set": ["Category-Ads"], 
+        "action": "reject", 
+        "method": "rcode", 
+        "code": "refused" 
+      },
       { "rule_set": ["GeoSite-CN"], "server": "Local-DNS" },
       { "rule_set": ["GeoLocation-!CN"], "server": "Remote-DNS" }
     ],
