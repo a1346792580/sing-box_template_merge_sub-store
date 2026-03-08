@@ -1,7 +1,13 @@
 const { name, type = "0", rules: rules_file } = $arguments;
 
 // 1. 读取模板
-let config = JSON.parse($files[0]);
+let config;
+
+if ($files && $files.length > 0) {
+  config = JSON.parse($files[0]);
+} else {
+  throw new Error("未找到模板文件");
+}
 
 // 2. 插入自定义规则（优先级最高）
 if (rules_file) {
@@ -24,14 +30,14 @@ if (rules_file) {
 
       config.route.rules.unshift(...customRules);
 
-      console.log("已成功将自定义规则置顶");
+      console.log("已成功插入自定义规则");
     }
   } catch (e) {
-    console.log("自定义规则解析失败，跳过: " + e);
+    console.log("自定义规则解析失败: " + e);
   }
 }
 
-// 3. 拉取订阅节点
+// 3. 拉取订阅或合集节点
 let proxies = await produceArtifact({
   name,
   type: /^1$|col/i.test(type) ? "collection" : "subscription",
@@ -39,20 +45,24 @@ let proxies = await produceArtifact({
   produceType: "internal",
 });
 
-// 4. 防止节点 tag 重复
+// 4. 获取已有节点tag
 const existingTags = config.outbounds.map(o => o.tag);
+
+// 5. 去重节点
 proxies = proxies.filter(p => !existingTags.includes(p.tag));
 
-// 5. 添加节点到 outbounds
+// 6. 添加节点到 outbounds
 config.outbounds.push(...proxies);
 
-// 6. 生成节点 tag 列表
+// 7. 节点 tag 列表
 const allTags = proxies.map(p => p.tag);
+
+// 终端节点（非 relay）
 const terminalTags = proxies
   .filter(p => !p.detour)
   .map(p => p.tag);
 
-// 7. 向分组添加节点
+// 8. 自动填充分组
 config.outbounds.forEach(group => {
 
   if (!Array.isArray(group.outbounds)) return;
@@ -60,24 +70,24 @@ config.outbounds.forEach(group => {
   // 跳过直连和拦截
   if (group.type === "direct" || group.type === "block") return;
 
-  // 节点选择加入全部节点
-  if (group.tag === "🚀 节点选择") {
-    group.outbounds.push(...allTags);
+  // 自动选择组只加入终端节点
+  if (group.type === "urltest") {
+    group.outbounds.push(...terminalTags);
   }
 
-  // 自动选择只加入终端节点
-  if (group.tag === "🎈 自动选择") {
-    group.outbounds.push(...terminalTags);
+  // selector 组加入全部节点
+  else if (group.type === "selector") {
+    group.outbounds.push(...allTags);
   }
 
 });
 
-// 8. 分组内去重
+// 9. 分组内去重
 config.outbounds.forEach(group => {
   if (Array.isArray(group.outbounds)) {
     group.outbounds = [...new Set(group.outbounds)];
   }
 });
 
-// 9. 输出最终配置
+// 10. 输出最终配置
 $content = JSON.stringify(config, null, 2);
