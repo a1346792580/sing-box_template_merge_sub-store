@@ -1,6 +1,5 @@
 {
   "log": {
-    "disabled": false,
     "level": "info",
     "timestamp": true
   },
@@ -9,9 +8,8 @@
     "clash_api": {
       "external_controller": "127.0.0.1:20123",
       "external_ui": "ui",
-      "secret": "ID_dm82su02",
-      "default_mode": "rule",
-      "external_ui_download_detour": "🎯 全球直连"
+      "secret": "",
+      "default_mode": "rule"
     },
     "cache_file": {
       "enabled": true,
@@ -19,16 +17,86 @@
     }
   },
 
+  "dns": {
+    "servers": [
+      {
+        "tag": "proxy_dns",
+        "type": "https",
+        "server": "8.8.8.8",
+        "detour": "🚀 节点选择"
+      },
+      {
+        "tag": "direct_dns",
+        "type": "udp",
+        "server": "223.5.5.5"
+      },
+      {
+        "tag": "fake_dns",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      }
+    ],
+
+    "rules": [
+
+      {
+        "clash_mode": "direct",
+        "server": "direct_dns"
+      },
+
+      {
+        "clash_mode": "global",
+        "server": "fake_dns"
+      },
+
+      {
+        "rule_set": "GeoSite-CN",
+        "server": "direct_dns"
+      },
+
+      {
+        "query_type": ["A","AAAA"],
+        "server": "fake_dns",
+        "rewrite_ttl": 1
+      }
+
+    ]
+  },
+
   "inbounds": [
     {
       "type": "tun",
       "tag": "tun-in",
-      "interface_name": "sing-box",
-      "address": ["172.18.0.1/30"],
-      "mtu": 1500,
+      "interface_name": "singbox_tun",
+      "address": [
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "mtu": 9000,
       "auto_route": true,
       "strict_route": true,
-      "stack": "system"
+      "stack": "mixed",
+
+      "route_exclude_address": [
+        "10.0.0.0/8",
+        "100.64.0.0/10",
+        "169.254.0.0/16",
+        "172.16.0.0/12",
+        "192.0.0.0/24",
+        "192.168.0.0/16"
+      ],
+
+      "route_exclude_address_set": [
+        "GeoIP-CN"
+      ]
+    },
+
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 7890
     }
   ],
 
@@ -47,21 +115,8 @@
       "type": "urltest",
       "tag": "🎈 自动选择",
       "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
       "interval": "10m",
       "tolerance": 50
-    },
-
-    {
-      "type": "selector",
-      "tag": "Google",
-      "outbounds": ["🚀 节点选择"]
-    },
-
-    {
-      "type": "selector",
-      "tag": "YouTube",
-      "outbounds": ["🚀 节点选择"]
     },
 
     {
@@ -72,19 +127,25 @@
 
     {
       "type": "selector",
-      "tag": "Steam",
+      "tag": "Streaming",
+      "outbounds": ["🚀 节点选择"]
+    },
+
+    {
+      "type": "selector",
+      "tag": "AI-Service",
+      "outbounds": ["🚀 节点选择"]
+    },
+
+    {
+      "type": "selector",
+      "tag": "Google",
       "outbounds": ["🚀 节点选择"]
     },
 
     {
       "type": "selector",
       "tag": "Microsoft",
-      "outbounds": ["🚀 节点选择"]
-    },
-
-    {
-      "type": "selector",
-      "tag": "OpenAI",
       "outbounds": ["🚀 节点选择"]
     },
 
@@ -120,85 +181,11 @@
 
   "route": {
 
-    "default_domain_resolver": "Local-DNS",
+    "final": "🐟 漏网之鱼",
 
-    "rules": [
+    "auto_detect_interface": true,
 
-      { "action": "sniff" },
-
-      { "protocol": "dns", "action": "hijack-dns" },
-
-      {
-        "rule_set": ["Category-Ads"],
-        "action": "reject"
-      },
-
-      {
-        "domain_suffix": "googleapis.cn",
-        "outbound": "Google"
-      },
-
-      {
-        "rule_set": ["OpenAI"],
-        "outbound": "OpenAI"
-      },
-
-      {
-        "rule_set": ["Youtube"],
-        "outbound": "YouTube"
-      },
-
-      {
-        "rule_set": ["Google"],
-        "outbound": "Google"
-      },
-
-      {
-        "rule_set": ["Telegram-IP"],
-        "outbound": "Telegram"
-      },
-
-      {
-        "rule_set": ["Telegram"],
-        "outbound": "Telegram"
-      },
-
-      {
-        "rule_set": ["Steam"],
-        "outbound": "Steam"
-      },
-
-      {
-        "rule_set": ["Microsoft"],
-        "outbound": "Microsoft"
-      },
-
-      {
-        "rule_set": ["Apple"],
-        "outbound": "Apple"
-      },
-
-      {
-        "rule_set": ["BiliBili"],
-        "outbound": "哔哩哔哩"
-      },
-
-      {
-        "rule_set": ["GeoIP-CN"],
-        "outbound": "🎯 全球直连"
-      },
-
-      {
-        "rule_set": ["GeoSite-CN"],
-        "outbound": "🎯 全球直连"
-      },
-
-      {
-        "rule_set": ["GeoLocation-!CN"],
-        "outbound": "🚀 节点选择"
-      }
-
-    ],
+    "default_domain_resolver": "direct_dns",
 
     "rule_set": [
 
@@ -224,20 +211,6 @@
       },
 
       {
-        "tag": "Google",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/google.srs"
-      },
-
-      {
-        "tag": "Youtube",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/youtube.srs"
-      },
-
-      {
         "tag": "Telegram",
         "type": "remote",
         "format": "binary",
@@ -252,10 +225,24 @@
       },
 
       {
-        "tag": "Steam",
+        "tag": "AI-Service",
         "type": "remote",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/steam.srs"
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ai-!cn.srs"
+      },
+
+      {
+        "tag": "Netflix",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/netflix.srs"
+      },
+
+      {
+        "tag": "Google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/google.srs"
       },
 
       {
@@ -273,47 +260,10 @@
       },
 
       {
-        "tag": "OpenAI",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/openai.srs"
-      },
-
-      {
         "tag": "BiliBili",
         "type": "remote",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/bilibili.srs"
-      },
-
-      {
-        "tag": "GeoLocation-!CN",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-!cn.srs"
-      }
-
-    ],
-
-    "final": "🐟 漏网之鱼",
-    "auto_detect_interface": true
-  },
-
-  "dns": {
-
-    "servers": [
-
-      {
-        "tag": "Local-DNS",
-        "type": "udp",
-        "server": "223.5.5.5"
-      },
-
-      {
-        "tag": "Remote-DNS",
-        "type": "https",
-        "server": "dns.google",
-        "detour": "🚀 节点选择"
       }
 
     ],
@@ -321,18 +271,85 @@
     "rules": [
 
       {
-        "rule_set": ["GeoSite-CN"],
-        "server": "Local-DNS"
+        "network": "icmp",
+        "outbound": "🎯 全球直连"
       },
 
       {
-        "rule_set": ["GeoLocation-!CN"],
-        "server": "Remote-DNS"
+        "action": "sniff"
+      },
+
+      {
+        "protocol": "dns",
+        "action": "hijack-dns"
+      },
+
+      {
+        "protocol": "quic",
+        "action": "reject"
+      },
+
+      {
+        "rule_set": "Category-Ads",
+        "action": "reject"
+      },
+
+      {
+        "domain_suffix": "googleapis.cn",
+        "outbound": "Google"
+      },
+
+      {
+        "rule_set": "Telegram",
+        "outbound": "Telegram"
+      },
+
+      {
+        "rule_set": "Telegram-IP",
+        "outbound": "Telegram"
+      },
+
+      {
+        "rule_set": "AI-Service",
+        "outbound": "AI-Service"
+      },
+
+      {
+        "rule_set": "Netflix",
+        "outbound": "Streaming"
+      },
+
+      {
+        "rule_set": "Google",
+        "outbound": "Google"
+      },
+
+      {
+        "rule_set": "Microsoft",
+        "outbound": "Microsoft"
+      },
+
+      {
+        "rule_set": "Apple",
+        "outbound": "Apple"
+      },
+
+      {
+        "rule_set": "BiliBili",
+        "outbound": "哔哩哔哩"
+      },
+
+      {
+        "rule_set": "GeoIP-CN",
+        "outbound": "🎯 全球直连"
+      },
+
+      {
+        "rule_set": "GeoSite-CN",
+        "outbound": "🎯 全球直连"
       }
 
-    ],
-
-    "final": "Local-DNS"
+    ]
 
   }
 }
