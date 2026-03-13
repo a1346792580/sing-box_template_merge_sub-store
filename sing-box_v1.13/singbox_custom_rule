@@ -73,10 +73,10 @@
         "172.18.0.1/30",
         "fdfe:dcba:9876::1/126"
       ],
-      "mtu": 9000,
+      "mtu": 1500,
       "auto_route": true,
       "strict_route": true,
-      "stack": "mixed",
+      "stack": "system",
 
       "route_exclude_address": [
         "10.0.0.0/8",
@@ -117,42 +117,6 @@
       "outbounds": [],
       "interval": "10m",
       "tolerance": 50
-    },
-
-    {
-      "type": "selector",
-      "tag": "Telegram",
-      "outbounds": ["🚀 节点选择"]
-    },
-
-    {
-      "type": "selector",
-      "tag": "Streaming",
-      "outbounds": ["🚀 节点选择"]
-    },
-
-    {
-      "type": "selector",
-      "tag": "AI-Service",
-      "outbounds": ["🚀 节点选择"]
-    },
-
-    {
-      "type": "selector",
-      "tag": "Google",
-      "outbounds": ["🚀 节点选择"]
-    },
-
-    {
-      "type": "selector",
-      "tag": "Microsoft",
-      "outbounds": ["🚀 节点选择"]
-    },
-
-    {
-      "type": "selector",
-      "tag": "Apple",
-      "outbounds": ["🎯 全球直连","🚀 节点选择"]
     },
 
     {
@@ -211,55 +175,6 @@
       },
 
       {
-        "tag": "Telegram",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/telegram.srs"
-      },
-
-      {
-        "tag": "Telegram-IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/telegram.srs"
-      },
-
-      {
-        "tag": "AI-Service",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ai-!cn.srs"
-      },
-
-      {
-        "tag": "Netflix",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/netflix.srs"
-      },
-
-      {
-        "tag": "Google",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/google.srs"
-      },
-
-      {
-        "tag": "Microsoft",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/microsoft.srs"
-      },
-
-      {
-        "tag": "Apple",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/apple.srs"
-      },
-
-      {
         "tag": "BiliBili",
         "type": "remote",
         "format": "binary",
@@ -296,42 +211,7 @@
 
       {
         "domain_suffix": "googleapis.cn",
-        "outbound": "Google"
-      },
-
-      {
-        "rule_set": "Telegram",
-        "outbound": "Telegram"
-      },
-
-      {
-        "rule_set": "Telegram-IP",
-        "outbound": "Telegram"
-      },
-
-      {
-        "rule_set": "AI-Service",
-        "outbound": "AI-Service"
-      },
-
-      {
-        "rule_set": "Netflix",
-        "outbound": "Streaming"
-      },
-
-      {
-        "rule_set": "Google",
-        "outbound": "Google"
-      },
-
-      {
-        "rule_set": "Microsoft",
-        "outbound": "Microsoft"
-      },
-
-      {
-        "rule_set": "Apple",
-        "outbound": "Apple"
+        "outbound": "🚀 节点选择"
       },
 
       {
